@@ -3,9 +3,9 @@
   display: flex;
   justify-content: space-between; /* Space between logo and other elements */
   align-items: center;
-  padding: 20px 50px;
+  padding: 10px 50px;
   background: white;
-  position: fixed;
+
   width: 100%;
   top: 0;
   z-index: 1000;
