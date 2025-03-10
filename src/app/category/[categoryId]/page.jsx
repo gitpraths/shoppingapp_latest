@@ -1,46 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation"; // Extract `categoryId` from the URL
 import { useQuery } from "@apollo/client"; // Apollo client for GraphQL queries
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../context/CartContext"; // Cart Context API
 import Image from "next/image";
 import Link from "next/link";
-
-import { productClient } from "../../utils/apollo-client"; // Apollo client instance
-import { GET_CATEGORY_PRODUCTS } from "../../graphql/categoryQueries"; // GraphQL query for category products
-import "./style.css"; // Assuming shared styles for Category Page
+import { productClient } from "../../utils/apollo-client"; // Custom Apollo client
+import { GET_CATEGORY_PRODUCTS } from "../../graphql/categoryQueries"; // GraphQL query
+import "./category.css"; // Category-specific styles
 
 const CategoryPage = () => {
-  const { categoryId } = useParams(); // Extract `categoryId` from the URL
+  const { categoryId } = useParams(); // Extract `categoryId` from URL
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const productsPerPage = 21; // Number of products per page
-  const { addItem } = useCart();
+  const productsPerPage = 21; // Products per page for pagination
+  const { addItem } = useCart(); // Add product to cart function
 
   // Apollo Client Query
   const { data, loading, error } = useQuery(GET_CATEGORY_PRODUCTS, {
     variables: { id: parseInt(categoryId) }, // Pass categoryId dynamically
-    skip: !categoryId, // Skip query if categoryId is not available
-    client: productClient, // Use custom Apollo client
+    skip: !categoryId, // Skip query if categoryId does not exist
+    client: productClient, // Use a custom Apollo client instance
   });
 
-  // Handle loading and error states
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading category data: {error.message}</p>;
-
-  // Extract data
+  // Extract category and product data
   const category = data?.category || {};
   const { products = [] } = category;
 
   // Calculate total pages
   const totalPages = Math.ceil(products.length / productsPerPage);
-
-  // Handle pagination
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
 
   // Get products for the current page
   const displayedProducts = products.slice(
@@ -48,12 +36,47 @@ const CategoryPage = () => {
     currentPage * productsPerPage
   );
 
+  // Handle `useEffect` to dynamically set the page title
+  useEffect(() => {
+    document.title = category.name
+      ? `Category: ${category.name} - LUXORA`
+      : "Category - LUXORA";
+  }, [category.name]); // Runs whenever `category.name` changes
+
+  // Handle logging for `currentPage` changes
+  useEffect(() => {
+    console.info(`Current Page changed: ${currentPage}`);
+  }, [currentPage]); // Runs whenever `currentPage` changes
+
+  // Log when component mounts or when `categoryId` changes
+  useEffect(() => {
+    if (categoryId) {
+      console.log(`Loaded category with ID: ${categoryId}`);
+    }
+  }, [categoryId]); // Executes when `categoryId` changes
+
+  // Handle loading and error states
+  if (loading) return <div className="loading-message">Loading...</div>;
+  if (error)
+    return (
+      <div className="error-message">
+        Error loading category data: {error.message}
+      </div>
+    );
+
+  // Handle pagination
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage); // Set new page state
+    }
+  };
+
   return (
     <div className="category-page">
       {/* Category Header */}
       <header className="category-header">
-        <h1>{category.name}</h1>
-        <p>{category.description}</p>
+        <h1 className="category-name">{category.name}</h1>
+        <p className="category-description">{category.description}</p>
       </header>
 
       {/* Product Grid */}
@@ -62,18 +85,22 @@ const CategoryPage = () => {
           <div key={product.id} className="product-card">
             <div className="image-container">
               {/* Product Image */}
-              <Image
-                src={product.imageUrl || "/default-product.jpg"} // Fallback to default image
-                alt={product.name}
-                width={300}
-                height={350}
-                className="product-image"
-              />
+              <Link href={`/Product/${product.id}`}>
+                <Image
+                  src={product.imageUrl || "/default-product.jpg"} // Fallback to default image
+                  alt={product.name}
+                  width={300}
+                  height={350}
+                  className="product-image"
+                />
+              </Link>
             </div>
+
             <div className="product-details">
               <span className="product-name">{product.name}</span>
               <span className="product-price">${product.price}</span>
             </div>
+
             {/* Add to Cart Button */}
             <button
               className="add-to-cart-btn"

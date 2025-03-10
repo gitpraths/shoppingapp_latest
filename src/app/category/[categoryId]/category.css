@@ -1,0 +1,141 @@
+/* Category Page Container */
+.category-page {
+  padding: 30px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Space between sections */
+  background-color: #f9f9f9;
+}
+
+/* Category Header */
+.category-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.category-header h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+.category-header p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Product Grid */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* Center products */
+}
+
+/* Product Cards */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 220px;
+  height: 320px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for cards */
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Product Card Hover Effect */
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Container */
+.image-container {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+/* Product Image */
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Proper scaling for product images */
+}
+
+/* Product Details */
+.product-details {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.product-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+.product-price {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  background-color: #d18a4d;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.add-to-cart-btn:hover {
+  background-color: #b27032; /* Darker button shade when hovered */
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.page-button {
+  padding: 8px 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+.page-button:hover {
+  background: #a57245;
+}
+.page-number {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Explore More Categories */
+.other-categories {
+  text-align: center;
+}
+.other-categories h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+.other-categories a {
+  font-size: 14px;
+  color: #d18a4d;
+  text-decoration: none;
+}
+.other-categories a:hover {
+  text-decoration: underline;
+}
