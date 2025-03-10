@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation"; // Extract `categoryId` from the URL
 import { useQuery } from "@apollo/client"; // Apollo client for GraphQL queries
+import { useCart } from "../../context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,6 +15,7 @@ const CategoryPage = () => {
   const { categoryId } = useParams(); // Extract `categoryId` from the URL
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const productsPerPage = 21; // Number of products per page
+  const { addItem } = useCart();
 
   // Apollo Client Query
   const { data, loading, error } = useQuery(GET_CATEGORY_PRODUCTS, {
@@ -72,7 +74,13 @@ const CategoryPage = () => {
               <span className="product-name">{product.name}</span>
               <span className="product-price">${product.price}</span>
             </div>
-            <button className="add-to-cart-btn">Add to Cart</button>
+            {/* Add to Cart Button */}
+            <button
+              className="add-to-cart-btn"
+              onClick={() => addItem(product)} // Add product to cart
+            >
+              Add to Cart
+            </button>
           </div>
         ))}
       </div>
